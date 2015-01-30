@@ -84,7 +84,8 @@ $frm  = false;
 $user = false;
 
 $authsequence = get_enabled_auth_plugins(true); // auths, in sequence
-$authsequence = array_reverse($authsequence);
+if ($authsequence != null)
+	 $authsequence = array_reverse($authsequence);
 foreach($authsequence as $authname) {
     $authplugin = get_auth_plugin($authname);
     $authplugin->loginpage_hook();

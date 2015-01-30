@@ -591,8 +591,9 @@ abstract class moodleform {
      */
     function get_data() {
         $mform =& $this->_form;
-	    if (!$this->is_cancelled() and $this->is_submitted() and $this->is_validated()) {
-           $data = $mform->exportValues();
+
+        if (!$this->is_cancelled() and $this->is_submitted() and $this->is_validated()) {
+            $data = $mform->exportValues();
             unset($data['sesskey']); // we do not need to return sesskey
             unset($data['_qf__'.$this->_formname]);   // we do not need the submission marker too
             if (empty($data)) {

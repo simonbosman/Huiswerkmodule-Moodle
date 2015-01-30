@@ -1639,13 +1639,17 @@ class global_navigation extends navigation_node {
         } else if (array_key_exists($categoryid, $this->addedcategories)) {
             // The category itself has been loaded already so we just need to ensure its subcategories
             // have been loaded
-            list($sql, $params) = $DB->get_in_or_equal(array_keys($this->addedcategories), SQL_PARAMS_NAMED, 'parent', false);
-            if ($showbasecategories) {
-                // We need to include categories with parent = 0 as well
-                $sqlwhere .= " AND (cc.parent = :categoryid OR cc.parent = 0) AND cc.parent {$sql}";
-            } else {
-                // All we need is categories that match the parent
-                $sqlwhere .= " AND cc.parent = :categoryid AND cc.parent {$sql}";
+            $addedcategories = $this->addedcategories;
+            unset($addedcategories[$categoryid]);
+            if (count($addedcategories) > 0) {
+                list($sql, $params) = $DB->get_in_or_equal(array_keys($addedcategories), SQL_PARAMS_NAMED, 'parent', false);
+                if ($showbasecategories) {
+                    // We need to include categories with parent = 0 as well
+                    $sqlwhere .= " AND (cc.parent = :categoryid OR cc.parent = 0) AND cc.parent {$sql}";
+                } else {
+                    // All we need is categories that match the parent
+                    $sqlwhere .= " AND cc.parent = :categoryid AND cc.parent {$sql}";
+                }
             }
             $params['categoryid'] = $categoryid;
         } else {
@@ -2226,6 +2230,8 @@ class global_navigation extends navigation_node {
             }
         }
 
+        // Add the messages link.
+        // It is context based so can appear in "My profile" and in course participants information.
         if (!empty($CFG->messaging)) {
             $messageargs = array('user1' => $USER->id);
             if ($USER->id != $user->id) {
@@ -2238,13 +2244,15 @@ class global_navigation extends navigation_node {
             $usernode->add(get_string('messages', 'message'), $url, self::TYPE_SETTING, null, 'messages');
         }
 
-        if ($iscurrentuser && has_capability('moodle/user:manageownfiles', context_user::instance($USER->id))) {
+        // Add the "My private files" link.
+        // This link doesn't have a unique display for course context so only display it under "My profile".
+        if ($issitecourse && $iscurrentuser && has_capability('moodle/user:manageownfiles', $usercontext)) {
             $url = new moodle_url('/user/files.php');
             $usernode->add(get_string('myfiles'), $url, self::TYPE_SETTING);
         }
 
         if (!empty($CFG->enablebadges) && $iscurrentuser &&
-                has_capability('moodle/badges:manageownbadges', context_user::instance($USER->id))) {
+                has_capability('moodle/badges:manageownbadges', $usercontext)) {
             $url = new moodle_url('/badges/mybadges.php');
             $usernode->add(get_string('mybadges', 'badges'), $url, self::TYPE_SETTING);
         }

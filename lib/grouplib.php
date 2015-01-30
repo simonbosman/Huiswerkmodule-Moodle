@@ -198,7 +198,8 @@ function groups_get_grouping($groupingid, $fields='*', $strictness=IGNORE_MISSIN
  */
 function groups_get_all_groups($courseid, $userid=0, $groupingid=0, $fields='g.*') {
     global $DB;
-	// We need to check that we each field in the fields list belongs to the group table and that it has not being
+
+    // We need to check that we each field in the fields list belongs to the group table and that it has not being
     // aliased. If its something else we need to avoid the cache and run the query as who knows whats going on.
     $knownfields = true;
     if ($fields !== 'g.*') {
@@ -246,7 +247,7 @@ function groups_get_all_groups($courseid, $userid=0, $groupingid=0, $fields='g.*
         $params = array();
 
     } else {
-    	list($usql, $params) = $DB->get_in_or_equal($userid);
+        list($usql, $params) = $DB->get_in_or_equal($userid);
         $userfrom  = ", {groups_members} gm";
         $userwhere = "AND g.id = gm.groupid AND gm.userid $usql";
     }
@@ -262,7 +263,6 @@ function groups_get_all_groups($courseid, $userid=0, $groupingid=0, $fields='g.*
 
     array_unshift($params, $courseid);
 
-//	echo "SELECT " . $fields . " FROM {groups} g " . $userfrom . $groupingfrom . " WHERE g.courseid = ? " . $userwhere . $groupingwhere . "," . $params  ;
     return $DB->get_records_sql("SELECT $fields
                                    FROM {groups} g $userfrom $groupingfrom
                                   WHERE g.courseid = ? $userwhere $groupingwhere

@@ -798,7 +798,7 @@ class theme_config {
             $csscontent = $optimiser->process($csscontent);
 
         } else {
-            //$csscontent = core_minify::css($csscontent);
+           // $csscontent = core_minify::css($csscontent);
         }
 
         return $csscontent;

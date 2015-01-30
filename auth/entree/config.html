@@ -1,0 +1,152 @@
+<?php
+
+// set to defaults if undefined
+if (!isset($config->notification)) {
+    $config->notification = 'https://aselect.entree.kennisnet.nl/aselectserver/server/ssonotificationservice?elo=';
+}
+if (!isset($config->cookiemonster)) {
+    $config->cookiemonster = 'https://aselect.entree.kennisnet.nl/aselectserver/server/cookiemonster';
+}
+if (!isset($config->login)) {
+	$config->login = 'https://aselect.entree.kennisnet.nl/openaselect/profiles/entree?id=';
+}
+if (!isset($config->logout)) {
+    $config->logout = 'https://aselect.entree.kennisnet.nl/openaselect/profiles/entree/logout';
+}
+if (!isset($config->callback)) {
+	$config->callback = 'https://www.yourmoodlesite.com/auth/entree/callback.php';
+}
+if (!isset($config->secret)) {
+    $config->secret = '';
+}
+if (!isset($config->vleid)) {
+    $config->vleid = '';
+}
+if (!isset($config->brin)) {
+    $config->brin = '';
+}
+
+?>
+<table cellspacing="0" cellpadding="5" border="0">
+
+<tr valign="top">
+    <td align="right"><?php print_string('auth_entreenotification_key', 'auth_entree') ?>: </td>
+    <td>
+        <input name="notification" type="text" size="40" value="<?php echo $config->notification ?>" />
+        <?php
+
+        if (isset($err['notification'])) {
+            formerr($err['notification']);
+        }
+
+        ?>
+        </td>
+    <td><?php print_string('auth_entreenotification', 'auth_entree') ?></td>
+</tr>
+
+<tr valign="top">
+    <td align="right"><?php print_string('auth_entreecookiemonster_key', 'auth_entree') ?>: </td>
+    <td>
+        <input name="cookiemonster" type="text" size="40" value="<?php echo $config->cookiemonster ?>" />
+        <?php
+
+        if (isset($err['cookiemonster'])) {
+            formerr($err['cookiemonster']);
+        }
+
+        ?>
+        </td>
+    <td><?php print_string('auth_entreecookiemonster', 'auth_entree') ?></td>
+</tr>
+
+<tr valign="top">
+    <td align="right"><?php print_string('auth_entreelogin_key', 'auth_entree') ?>: </td>
+    <td>
+        <input name="login" type="text" size="40" value="<?php echo $config->login ?>" />
+        <?php
+
+        if (isset($err['login'])) {
+            formerr($err['login']);
+        }
+
+        ?>
+        </td>
+    <td><?php print_string('auth_entreelogin', 'auth_entree') ?></td>
+</tr>
+
+<tr valign="top">
+    <td align="right"><?php print_string('auth_entreelogout_key', 'auth_entree') ?>: </td>
+    <td>
+        <input name="logout" type="text" size="40" value="<?php echo $config->logout ?>" />
+        <?php
+
+        if (isset($err['logout'])) {
+            formerr($err['logout']);
+        }
+
+        ?>
+        </td>
+    <td><?php print_string('auth_entreelogout', 'auth_entree') ?></td>
+</tr>
+                                                                                                                                
+<tr valign="top">
+    <td align="right"><?php print_string('auth_entreecallback_key', 'auth_entree') ?>: </td>
+    <td>
+        <input name="callback" type="text" size="40" value="<?php echo $config->callback ?>" />
+        <?php
+
+        if (isset($err['callback'])) {
+            formerr($err['callback']);
+        }
+
+        ?>
+        </td>
+    <td><?php print_string('auth_entreecallback', 'auth_entree') ?></td>
+</tr>
+
+<tr valign="top" >
+    <td align="right"><?php print_string('auth_entreesecret_key', 'auth_entree') ?>: </td>
+    <td>
+        <input name="secret" type="text" size="40" value="<?php echo $config->secret ?>" />
+        <?php
+
+        if (isset($err['secret'])) {
+            formerr($err['secret']);
+        }
+
+        ?>
+    </td>
+    <td><?php print_string('auth_entreesecret', 'auth_entree') ?></td>
+</tr>
+
+<tr valign="top" >
+    <td align="right"><?php print_string('auth_entreevleid_key', 'auth_entree') ?>: </td>
+    <td>
+        <input name="vleid" type="text" size="15" value="<?php echo $config->vleid ?>" />
+        <?php
+
+        if (isset($err['vleid'])) {
+            formerr($err['vleid']);
+        }
+
+        ?>
+    </td>
+    <td><?php print_string('auth_entreevleid', 'auth_entree') ?></td>
+</tr>
+
+<tr valign="top" >
+    <td align="right"><?php print_string('auth_entreebrin_key', 'auth_entree') ?>: </td>
+    <td>
+        <input name="brin" type="text" size="15" value="<?php echo $config->brin ?>" />
+        <?php
+
+        if (isset($err['brin'])) {
+            formerr($err['brin']);
+        }
+
+        ?>
+    </td>
+    <td><?php print_string('auth_entreebrin', 'auth_entree') ?></td>
+</tr>
+
+</table>

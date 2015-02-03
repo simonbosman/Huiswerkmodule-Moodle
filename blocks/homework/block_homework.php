@@ -1,28 +1,7 @@
 <?php
-// This file is part of Moodle - http://moodle.org/
-//
-// Moodle is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// Moodle is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
-
-/**
- * The mform for creating and editing a calendar event
- *
- * @copyright 2015 Simon Bosman
- * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- * @package homework
- */
 include_once ($CFG->dirroot . '/course/lib.php');
 include_once ($CFG->libdir . '/coursecatlib.php');
+error_reporting(E_ALL);
 class block_homework extends block_list {
 	function init() {
 		$this->title = get_string ( 'homework', 'block_homework' );
@@ -42,44 +21,28 @@ class block_homework extends block_list {
 		$icon = '<img src="' . $OUTPUT->pix_url ( 'i/course' ) . '" class="icon" alt="" />';
 		$sortorder = 'visible DESC, sortorder ASC';
 		$courseGroups = array ();
-		$groups = array ();
-		$groupsSorted = array ();
 		
-		if (empty ( $CFG->disablemycourses ) and isloggedin () and ! isguestuser () and ! (has_capability ( 'moodle/course:update', context_system::instance () ) and $adminseesall)) {
+		if (empty ( $CFG->disablemycourses )and (user_has_role_assignment($USER->id, 3)) and isloggedin () and ! isguestuser ()) {
 			// Get the cources and groups
 			if ($courses = enrol_get_my_courses ( NULL, $sortorder )) {
 				foreach ( $courses as $course ) {
-					$coursecontext = context_course::instance ( $course->id );
-					$courseGroups [] = groups_get_all_groups ( $course->id );
-				}
-			}
-			
-			// Get the group objects from the coursegroups array
-			foreach ( $courseGroups as $courseGroup ) {
-				foreach ( $courseGroup as $group ) {
-					$groups [] = $group;
-				}
-			}
-			
-			// Get the groupname of the grouparray with group Objects
-			foreach ( $groups as $key => $value ) {
-				$groupsSorted [] = $value->name;
-			}
-			// Order the goup name alphabetically
-			natcasesort ( $groupsSorted );
-			
-			foreach ( $groupsSorted as $groupSorted ) {
-				// Get the group Object belonging to the group name
-				// Not very efficient but sufficient for the intended purpose
-				foreach ( $groups as $group ) {
-					if ($group->name == $groupSorted) {
-						$this->content->items [] = "<a title=\"" . format_string ( $group->name, true, array (
-								'context' => $coursecontext 
-						) ) . "\" " . "href=\"$CFG->wwwroot/calendar/event.php?action=new&homework=true&groupid=$group->id\">" . $icon . format_string ( $group->name ) . "</a>";
+					$groups  = groups_get_all_groups ( $course->id );
+					$courseGroups += [$course->id => ['course' => $course->fullname, 'groups' =>[]]];
+					foreach ($groups as $group){
+							$courseGroups[$course->id]['groups'] += [$group->id => $group->name];
 					}
 				}
 			}
+			
+			foreach ($courseGroups as $courseId => $course){
+				$this->content->items[] = "<p>" . $course['course'] . "</p>";
+				foreach($course['groups'] as $groupId => $group){
+					$this->content->items[] = "<a href=\"$CFG->wwwroot/calendar/event.php?action=new&homework=true&groupid=$groupId&courseid=$courseId\">" . $icon . format_string($group) . "</a>";
+				}
+				$this->content->items[] = "<p></p>";
+			}
 		}
+	
 		return $this->content;
 	}
 }

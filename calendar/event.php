@@ -132,11 +132,10 @@ if ($eventid !== 0) {
     $title = get_string('newevent', 'calendar');
     $event = new stdClass();
     if ($homework){
+    	
     	global $DB;
     	$group = $DB->get_record('groups', array('id'=>$groupid));
-    	$courseid = $group->courseid;
-    	$course = $group->courseid;
-        $event->eventtype = 'course';
+    	$event->eventtype = 'course';
         $title = 'Huiswerk opgeven';
     }
     calendar_get_allowed_types($formoptions->eventtypes, $course);

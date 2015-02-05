@@ -1795,7 +1795,8 @@ function calendar_get_allowed_types(&$allowed, $course = null) {
     $allowed->groups = false; // This may change just below
     $allowed->courses = false; // This may change just below
     $allowed->site = has_capability('moodle/calendar:manageentries', context_course::instance(SITEID));
-	if (!empty($course)) {
+
+    if (!empty($course)) {
         if (!is_object($course)) {
             $course = $DB->get_record('course', array('id' => $course), '*', MUST_EXIST);
         }
@@ -1929,6 +1930,9 @@ function calendar_normalize_tz($tz) {
         case('Japan Time'):
         case('Japan Standard Time'):
             $tz = 'Asia/Tokyo';
+            break;
+        case('Romance Standard Time'):
+            $tz = 'Europe/Brussels';
             break;
     }
     return $tz;
@@ -2102,15 +2106,15 @@ class calendar_event {
      */
     protected function calculate_context(stdClass $data) {
         global $USER, $DB;
+
         $context = null;
-         
         if (isset($data->courseid) && $data->courseid > 0) {
             $context =  context_course::instance($data->courseid);
         } else if (isset($data->course) && $data->course > 0) {
             $context =  context_course::instance($data->course);
         } else if (isset($data->groupid) && $data->groupid > 0) {
-        	$group = $DB->get_record('groups', array('id'=>$data->groupid));
-        	$context = context_course::instance($group->courseid);
+            $group = $DB->get_record('groups', array('id'=>$data->groupid));
+            $context = context_course::instance($group->courseid);
         } else if (isset($data->userid) && $data->userid > 0 && $data->userid == $USER->id) {
             $context =  context_user::instance($data->userid);
         } else if (isset($data->userid) && $data->userid > 0 && $data->userid != $USER->id &&
@@ -2970,6 +2974,7 @@ function calendar_add_icalendar_event($event, $courseid, $subscriptionid, $timez
     } else {
         $endtz = isset($event->properties['DTEND'][0]->parameters['TZID']) ? $event->properties['DTEND'][0]->parameters['TZID'] :
                 $timezone;
+        $endtz = calendar_normalize_tz($endtz);
         $eventrecord->timeduration = strtotime($event->properties['DTEND'][0]->value . ' ' . $endtz) - $eventrecord->timestart;
     }
 

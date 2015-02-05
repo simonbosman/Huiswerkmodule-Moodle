@@ -42,6 +42,7 @@
  * This file is part of the Calendar section Moodle
  *
  * @copyright 2003-2004 Jon Papaioannou (pj@moodle.org)
+ * @copyright 2015 Simon Bosman (simonbosman@gmail.com)
  * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v2 or later
  * @package calendar
  */
@@ -59,7 +60,7 @@ $eventid = optional_param('id', 0, PARAM_INT);
 $courseid = optional_param('courseid', SITEID, PARAM_INT);
 $courseid = optional_param('course', $courseid, PARAM_INT);
 $groupid = optional_param('groupid', $groupid, PARAM_INT);
-$homework = optional_param('homework', $homework, PARAM_BOOL);
+$homework = optional_param('homework', False, PARAM_BOOL);
 $day = optional_param('cal_d', 0, PARAM_INT);
 $month = optional_param('cal_m', 0, PARAM_INT);
 $year = optional_param('cal_y', 0, PARAM_INT);
@@ -132,7 +133,6 @@ if ($eventid !== 0) {
     $title = get_string('newevent', 'calendar');
     $event = new stdClass();
     if ($homework){
-    	
     	global $DB;
     	$group = $DB->get_record('groups', array('id'=>$groupid));
     	$event->eventtype = 'course';

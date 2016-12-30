@@ -11,4 +11,4 @@ Onderstaaand de aangebrachte wijzigingen aan Moodle.
 [patch login/index.php] (https://github.com/simonbosman/moodle-2.8.3/blob/master/login/index.php)<br>
 [patchfile -> moodle_homework_patch.diff] (https://github.com/simonbosman/moodle-2.8.3/blob/master/moodle_homework_patch.diff)
 
-[Screenshot] van de huiswerk module (https://github.com/simonbosman/moodle-2.8.3/blob/master/huiswerk1.PNG)
+[Screenshot](https://github.com/simonbosman/moodle-2.8.3/blob/master/huiswerk1.PNG) van de huiswerk module

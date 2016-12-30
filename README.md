@@ -1,4 +1,7 @@
-Mods Moodle
+Het opgeven van huiswerk binnen Moodle gebeurt via een omslachtige methodiek.<br>
+Een module homework gemaakt onder blocks, deze zorgt ervoor dat huiswerk in slechts 1 stap opgegeven kan worden.
+
+Onderstaaand aangebrachtedsdf aanpassingen aan Moodle.
 
 * + blocks/homework
 * + auth/entree
